@@ -6,6 +6,7 @@ import java.util.List;
 
 import recipegen.app.fhbgds.enums.DryIngredients;
 import recipegen.app.fhbgds.enums.EnumMethod;
+import recipegen.app.fhbgds.enums.IngredientType;
 import recipegen.app.fhbgds.enums.WetIngredients;
 
 public class Preparation {
@@ -93,7 +94,7 @@ public class Preparation {
 		recipe.newPrepSection(EnumMethod.getTitleFromMethodAndIngredient(method, ingredient));
 		switch (method) {
 			case boil:
-				recipe.addIngredient(WetIngredients.water, false);
+				recipe.addIngredient(WetIngredients.water, false, IngredientType.LARGE_QUANTITY_WET);
 				recipe.addStep("Add enough water to a pot to cover the " + ingredient.getName() + ".");
 				recipe.addStep("Bring the water to a boil.");
 				recipe.addStep("Add the " + ingredient.getName() + " to the boiling water.");
@@ -103,12 +104,12 @@ public class Preparation {
 			case braise:
 				stock = WetIngredients.getRandomStock();
 				oil = WetIngredients.getRandomOil();
-				recipe.addIngredient(oil, true);
-				recipe.addIngredient(stock, true);
+				recipe.addIngredient(oil, true, IngredientType.SMALL_QUANTITY_WET);
+				recipe.addIngredient(stock, true, IngredientType.LARGE_QUANTITY_WET);
 				recipe.beginIngredientCategory("Mirepoix");
-				recipe.addIngredient(DryIngredients.carrots, true);
-				recipe.addIngredient(DryIngredients.yellow_onion, true);
-				recipe.addIngredient(DryIngredients.celery, true);
+				recipe.addIngredient(DryIngredients.carrots, true, IngredientType.LARGE_QUANTITY_DRY);
+				recipe.addIngredient(DryIngredients.yellow_onion, true, IngredientType.LARGE_QUANTITY_DRY);
+				recipe.addIngredient(DryIngredients.celery, true, IngredientType.LARGE_QUANTITY_DRY);
 				recipe.endIngredientCategory();
 				recipe.addStep("Large dice the mirepoix.");
 				recipe.addStep("Add the " + oil.toString() + " to a large pot over medium-high heat.");
@@ -121,7 +122,7 @@ public class Preparation {
 				break;
 			case deep_fry:
 				oil = WetIngredients.getRandomOil();
-				recipe.addIngredient(oil, false);
+				recipe.addIngredient(oil, false, IngredientType.SMALL_QUANTITY_WET);
 				recipe.addStep("Add enough " + oil.toString() + " to a pot to be able to completely submerge the " + ingredient.getName() + ".");
 				recipe.addStep("Heat the " + oil.toString() + " to roughly 175°C.");
 				recipe.addStep("Carefully lower the " + ingredient.getName() + " into the hot " + oil.toString() + ".");
@@ -190,7 +191,7 @@ public class Preparation {
 				break;
 			case pan_fry:
 				oil = WetIngredients.getRandomOil();
-				recipe.addIngredient(oil, false);
+				recipe.addIngredient(oil, false, IngredientType.SMALL_QUANTITY_WET);
 				recipe.addStep("To a frying pan, add enough " + oil.toString() + " to cover the bottom.");
 				recipe.addStep("Apply medium-high heat and wait until the " + oil.toString() + " is around 170°C.");
 				recipe.addStep("Carefully set the " + ingredient.getName() + " into the " + oil.toString() + ".");
@@ -203,12 +204,12 @@ public class Preparation {
 				spices = DryIngredients.getSpices(3, 1);
 				int boilTime = (rand.nextInt(3) + 1);
 				
-				recipe.addIngredient(stock, true);
-				recipe.addIngredient(acid, true);
+				recipe.addIngredient(stock, true, IngredientType.LARGE_QUANTITY_WET);
+				recipe.addIngredient(acid, true, IngredientType.SMALL_QUANTITY_WET);
 				recipe.beginIngredientCategory("Mirepoix");
-					recipe.addIngredient(DryIngredients.carrots, true);
-					recipe.addIngredient(DryIngredients.yellow_onion, true);
-					recipe.addIngredient(DryIngredients.celery, true);
+					recipe.addIngredient(DryIngredients.carrots, true, IngredientType.LARGE_QUANTITY_DRY);
+					recipe.addIngredient(DryIngredients.yellow_onion, true, IngredientType.LARGE_QUANTITY_DRY);
+					recipe.addIngredient(DryIngredients.celery, true, IngredientType.LARGE_QUANTITY_DRY);
 				recipe.endIngredientCategory();
 				recipe.beginIngredientCategory("Bouquet Garni");
 					recipe.addSpices(spices, true);
@@ -228,7 +229,7 @@ public class Preparation {
 				break;
 			case reduce:
 				int time = rand.nextInt(3) + 1;
-				recipe.addIngredient(WetIngredients.water, false);
+				recipe.addIngredient(WetIngredients.water, false, IngredientType.LARGE_QUANTITY_WET);
 				recipe.addStep("Dissolve the " + ingredient.getName() + " in a pot of water.");
 				recipe.addStep("Continue to heat until the " + ingredient.getName() + isAre + "fully dissolved.");
 				recipe.addStep("Let the solution simmer until the volume is reduced by at least three quarters.");
@@ -241,9 +242,9 @@ public class Preparation {
 			case roast:
 				spices = DryIngredients.getSpices(3, 2);
 				oil = WetIngredients.getRandomOil();
-				recipe.addIngredient(oil, false);
-				recipe.addIngredient(DryIngredients.yellow_onion, true);
-				recipe.addIngredient(DryIngredients.russet_potatoes, true);
+				recipe.addIngredient(oil, false, IngredientType.SMALL_QUANTITY_WET);
+				recipe.addIngredient(DryIngredients.yellow_onion, true, IngredientType.LARGE_QUANTITY_DRY);
+				recipe.addIngredient(DryIngredients.russet_potatoes, true, IngredientType.LARGE_QUANTITY_DRY);
 				recipe.addSpices(spices, true);
 				recipe.addStep("Preheat the oven to 200°C");
 				recipe.addStep("Into an appropriately sized roasting pan, place the " + ingredient.getName() + ", onion, and potato and sprinkle the spices over everything.");
@@ -264,7 +265,7 @@ public class Preparation {
 				break;
 			case stir_fry:
 				oil = WetIngredients.getRandomOil();
-				recipe.addIngredient(oil, false);
+				recipe.addIngredient(oil, false, IngredientType.SMALL_QUANTITY_WET);
 				recipe.addStep("Apply high heat to an empty wok.");
 				recipe.addStep("Just as the wok begins to smoke, add the " + oil.toString() + " down the side of the wok.");
 				recipe.addStep("Add the " + ingredient.getName() + " to the wok and agitate continuously until golden brown.");

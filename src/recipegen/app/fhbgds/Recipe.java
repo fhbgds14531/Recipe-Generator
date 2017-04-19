@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import recipegen.app.fhbgds.enums.DryIngredients;
+import recipegen.app.fhbgds.enums.IngredientType;
 import recipegen.app.fhbgds.enums.WetIngredients;
 
 public class Recipe {
@@ -32,74 +33,6 @@ public class Recipe {
 		this.steps.add(this.step + ". " + step);
 	}
 
-	private Ingredient addIngredientLD(DryIngredients ingredient, boolean includeQuantity){
-		Ingredient i = null;
-		if(this.availableLQDIngredients.contains(ingredient)){
-			this.availableLQDIngredients.remove(this.availableLQDIngredients.indexOf(ingredient));
-			if(includeQuantity){
-				i = Preparation.getRandomAmountLD(ingredient);
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}else{
-				i = new Ingredient(ingredient.toString());
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}
-		}
-		return i;
-	}
-
-	private Ingredient addIngredientSD(DryIngredients ingredient, boolean includeQuantity){
-		Ingredient i = null;
-		if(this.availableSQDIngredients.contains(ingredient)){
-			this.availableSQDIngredients.remove(this.availableSQDIngredients.indexOf(ingredient));
-			if(includeQuantity){
-				i = Preparation.getRandomAmountSD(ingredient);
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}else{
-				i = new Ingredient(ingredient.toString());
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}
-		}
-		return i;
-	}
-
-	private Ingredient addIngredientLW(WetIngredients ingredient, boolean includeQuantity){
-		Ingredient i = null;
-		if(this.availableLQWIngredients.contains(ingredient)){
-			this.availableLQWIngredients.remove(this.availableLQWIngredients.indexOf(ingredient));
-			if(includeQuantity){
-				i = Preparation.getRandomAmountLW(ingredient);
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}else{
-				i = new Ingredient(ingredient.toString());
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}
-		}
-		return i;
-	}
-
-	private Ingredient addIngredientSW(WetIngredients ingredient, boolean includeQuantity){
-		Ingredient i = null;
-		if(this.availableSQWIngredients.contains(ingredient)){
-			this.availableSQWIngredients.remove(this.availableSQWIngredients.indexOf(ingredient));
-			if(includeQuantity){
-				i = Preparation.getRandomAmountSW(ingredient);
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}else{
-				i = new Ingredient(ingredient.toString());
-				this.ingredients.add(i);
-				this.addIngredientString(i.toString());
-			}
-		}
-		return i;
-	}
-	
 	public void addSpices(List<DryIngredients> spices, boolean includeAmount){
 		this.beginIngredientCategory("Spices");
 		for(DryIngredients spice : spices){
@@ -178,17 +111,67 @@ public class Recipe {
 		this.steps.add("");
 	}
 	
-	public Ingredient addIngredient(Object ingredient, boolean includeQuantity) {
-		if(DryIngredients.LARGE_QUANTITY_DRY.contains(ingredient)){
-			return this.addIngredientLD((DryIngredients) ingredient, includeQuantity);
-		}else if(DryIngredients.SMALL_QUANTITY_DRY.contains(ingredient)){
-			return this.addIngredientSD((DryIngredients) ingredient, includeQuantity);
-		}else if(WetIngredients.LARGE_QUANTITY_WET.contains(ingredient)){
-			return this.addIngredientLW((WetIngredients) ingredient, includeQuantity);
-		}else if(WetIngredients.SMALL_QUANTITY_WET.contains(ingredient)){
-			return this.addIngredientSW((WetIngredients) ingredient, includeQuantity);
+	public Ingredient addIngredient(Object ingredient, boolean includeQuantity, IngredientType type) {
+		Ingredient i = null;
+		switch(type){
+			case LARGE_QUANTITY_WET:
+				if(this.availableLQWIngredients.contains(ingredient)){
+					this.availableLQWIngredients.remove(this.availableLQWIngredients.indexOf(ingredient));
+					if(includeQuantity){
+						i = Preparation.getRandomAmountLW((WetIngredients) ingredient);
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}else{
+						i = new Ingredient(ingredient.toString());
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}
+				}
+			case LARGE_QUANTITY_DRY:
+				if(this.availableLQDIngredients.contains(ingredient)){
+					this.availableLQDIngredients.remove(this.availableLQDIngredients.indexOf(ingredient));
+					if(includeQuantity){
+						i = Preparation.getRandomAmountLD((DryIngredients) ingredient);
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}else{
+						i = new Ingredient(ingredient.toString());
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}
+				}
+				return i;
+			case SMALL_QUANTITY_WET:
+				if(this.availableSQWIngredients.contains(ingredient)){
+					this.availableSQWIngredients.remove(this.availableSQWIngredients.indexOf(ingredient));
+					if(includeQuantity){
+						i = Preparation.getRandomAmountSW((WetIngredients) ingredient);
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}else{
+						i = new Ingredient(ingredient.toString());
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}
+				}
+				return i;
+			case SMALL_QUANTITY_DRY:
+				if(this.availableSQDIngredients.contains(ingredient)){
+					this.availableSQDIngredients.remove(this.availableSQDIngredients.indexOf(ingredient));
+					if(includeQuantity){
+						i = Preparation.getRandomAmountSD((DryIngredients) ingredient);
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}else{
+						i = new Ingredient(ingredient.toString());
+						this.ingredients.add(i);
+						this.addIngredientString(i.toString());
+					}
+				}
+				return i;
+			default:
+				return null;
 		}
-		return null;
 	}
 	
 	public String getRecipe(){

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import recipegen.app.fhbgds.enums.DryIngredients;
 import recipegen.app.fhbgds.enums.EnumMethod;
+import recipegen.app.fhbgds.enums.IngredientType;
 import recipegen.app.fhbgds.enums.WetIngredients;
 
 public class Main {
@@ -43,7 +44,7 @@ public class Main {
 				}
 			}
 		}
-		Ingredient ingredient = r.addIngredient(randomIngredient, true);
+		Ingredient ingredient = r.addIngredient(randomIngredient, true, IngredientType.LARGE_QUANTITY_DRY);
 		EnumMethod method = EnumMethod.roast;//(EnumMethod) Util.getRandomObjectFromList(Arrays.asList((Object[]) EnumMethod.values()));
 		Preparation.executeMethod(ingredient, method, r, false);
 		System.out.println(EnumMethod.getTitleFromMethodAndIngredient(method, ingredient) + "\n");
