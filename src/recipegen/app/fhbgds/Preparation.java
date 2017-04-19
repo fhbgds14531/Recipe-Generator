@@ -253,7 +253,13 @@ public class Preparation {
 				break;
 			case saute:
 				oil = WetIngredients.getRandomOil();
+				recipe.addIngredient(oil, false, IngredientType.SMALL_QUANTITY_WET);
 				spices = DryIngredients.getSpices(2, 1);
+				recipe.addSpices(spices, true);
+				recipe.addStep("Add just enough " + oil.toString() + " to a pan to cover the bottom and apply medium-high heat.");
+				recipe.addStep("Once hot (hot pan, hot oil, food no stick), add the " + ingredient.getName() + " and the spices to the pan.");
+				recipe.addStep("Agitate frquently until the " + ingredient.getName() + " achieves a light brown color.");
+				recipe.addStep("Remove from heat.");
 				break;
 			case sear:
 				break;
